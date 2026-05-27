@@ -216,7 +216,7 @@ const SMSScanner = (() => {
       </div>
       <div class="result-body">
         <div class="result-row">
-          <span class="result-key">Confidence</span>
+          <span class="result-key">Spam Probability</span>
           <div class="prob-bar-wrap" style="flex:1; justify-content:flex-end;">
             <div class="prob-bar" style="max-width:120px;">
               <div class="prob-bar-fill" style="width:${prob*100}%; background:${severity.color};"></div>
