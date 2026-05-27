@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShieldScan — Settings</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg-base: #080d1a; --bg-surface: #0d1526; --bg-card: #111c33; --bg-input: #0a1220;
+      --border-dim: rgba(0,200,255,0.08); --border-soft: rgba(0,200,255,0.18); --border-glow: rgba(0,200,255,0.45);
+      --cyan: #00c8ff; --cyan-dim: rgba(0,200,255,0.12);
+      --text-primary: #e2eaf7; --text-secondary: #7a94be; --text-muted: #3d5270;
+      --red: #ff3b5c; --green: #06d6a0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg-base); color: var(--text-primary);
+      font-family: 'Syne', sans-serif; font-size: 14px;
+      min-height: 100vh; padding: 40px 20px;
+    }
+    .page-wrap { max-width: 580px; margin: 0 auto; }
+    .page-header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+    .brand-icon {
+      width: 40px; height: 40px; background: var(--cyan-dim); border: 1px solid var(--border-soft);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--cyan);
+    }
+    h1 { font-size: 22px; font-weight: 700; }
+    h1 span { color: var(--cyan); }
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border-dim);
+      border-radius: 14px; padding: 24px; margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border-dim);
+    }
+    .field { margin-bottom: 16px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; letter-spacing: 0.04em; }
+    input {
+      width: 100%; background: var(--bg-input); border: 1px solid var(--border-dim);
+      border-radius: 8px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; padding: 10px 13px; outline: none; transition: all 0.18s;
+    }
+    input:focus { border-color: var(--border-glow); box-shadow: 0 0 0 3px rgba(0,200,255,0.2); }
+    .hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    .btn-row { display: flex; gap: 10px; margin-top: 4px; }
+    button {
+      display: flex; align-items: center; gap: 7px; padding: 10px 18px;
+      border-radius: 9px; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+      cursor: pointer; border: 1px solid transparent; transition: all 0.18s; outline: none;
+    }
+    .btn-save { background: var(--cyan); color: var(--bg-base); border-color: var(--cyan); }
+    .btn-save:hover { background: #33d4ff; box-shadow: 0 0 16px rgba(0,200,255,0.35); }
+    .btn-reset { background: var(--bg-surface); border-color: var(--border-soft); color: var(--text-secondary); }
+    .btn-reset:hover { border-color: var(--border-glow); color: var(--text-primary); }
+    .toast-bar {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 500;
+      display: none; z-index: 999;
+    }
+    .toast-bar.show { display: block; animation: fadeIn 0.2s ease; }
+    .toast-bar.success { background: rgba(6,214,160,0.15); border: 1px solid rgba(6,214,160,0.4); color: var(--green); }
+    .toast-bar.error   { background: rgba(255,59,92,0.15); border: 1px solid rgba(255,59,92,0.4); color: var(--red); }
+    @keyframes fadeIn { from { opacity:0; transform: translateX(-50%) translateY(6px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <header class="page-header">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Shield<span>Scan</span> Settings</h1>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:2px;">Extension Configuration</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <p class="card-title">Backend Configuration</p>
+      <div class="field">
+        <label for="backend-url">Backend API URL</label>
+        <input id="backend-url" type="text" placeholder="http://127.0.0.1:8000" spellcheck="false" />
+        <p class="hint">FastAPI backend base URL. No trailing slash.</p>
+      </div>
+      <div class="field">
+        <label for="dashboard-url">Dashboard URL</label>
+        <input id="dashboard-url" type="text" placeholder="http://localhost:3000" spellcheck="false" />
+        <p class="hint">Your web dashboard for full statistics.</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn-save" id="save-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+          </svg>
+          Save Settings
+        </button>
+        <button class="btn-reset" id="reset-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.33"/>
+          </svg>
+          Reset Default
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-bar" id="toast"></div>
+  <script src="options.js"></script>
+</body>
+</html>
