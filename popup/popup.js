@@ -499,19 +499,13 @@ const SettingsPanel = (() => {
     try {
       const controller = new AbortController();
       const tid = setTimeout(() => controller.abort(), 5000);
-      const res = await fetch(`${url}/api/v1/predict-sms`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'ping' }),
-        signal: controller.signal,
-      });
+      // Chỉ GET root, không ghi DB
+      await fetch(`${url}/`, { method: 'GET', signal: controller.signal });
       clearTimeout(tid);
-      // Any HTTP response means server is reachable
       statusEl.innerHTML = `<span class="status-dot online"></span> Online`;
     } catch {
       statusEl.innerHTML = `<span class="status-dot offline"></span> Unreachable`;
     }
   }
-
   return { init };
 })();
